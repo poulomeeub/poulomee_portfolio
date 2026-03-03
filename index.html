@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poulomee Roy — AI Researcher & Data Scientist</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #060610;
+  --hot: #ff3cac;
+  --cyan: #00f5d4;
+  --volt: #e8ff3c;
+  --fire: #ff6b00;
+  --purple: #7b2fff;
+  --white: #f0eeff;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--white); overflow-x: hidden; cursor: none; }
+
+/* CURSOR */
+#cursor { position:fixed; width:12px; height:12px; background:var(--hot); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:difference; }
+#cursor-ring { position:fixed; width:40px; height:40px; border:1.5px solid var(--cyan); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .3s,height .3s; mix-blend-mode:difference; }
+
+/* NOISE */
+body::before { content:''; position:fixed; inset:0; z-index:9000; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); opacity:.3; }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1.2rem 3rem; background:rgba(6,6,16,0.7); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,60,172,0.12); }
+.nav-logo { font-family:'Bebas Neue'; font-size:1.6rem; letter-spacing:.1em; background:linear-gradient(90deg,var(--hot),var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.nav-links { display:flex; gap:2rem; }
+.nav-links a { font-size:.78rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:rgba(240,238,255,.5); text-decoration:none; position:relative; padding-bottom:2px; transition:color .3s; }
+.nav-links a::after { content:''; position:absolute; bottom:0; left:0; right:100%; height:1px; background:var(--cyan); transition:right .3s; }
+.nav-links a:hover { color:var(--cyan); }
+.nav-links a:hover::after { right:0; }
+
+/* HERO */
+#hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; padding:6rem 3rem 3rem; position:relative; overflow:hidden; }
+.hero-blobs { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.blob { position:absolute; border-radius:50%; filter:blur(80px); opacity:.22; animation:blobMove 10s ease-in-out infinite alternate; }
+.blob1 { width:500px;height:500px; background:var(--hot); top:-100px; left:-100px; }
+.blob2 { width:400px;height:400px; background:var(--purple); top:50%; right:-100px; animation-delay:-3s; }
+.blob3 { width:350px;height:350px; background:var(--cyan); bottom:-50px; left:35%; animation-delay:-6s; }
+@keyframes blobMove { from{transform:translate(0,0) scale(1);} to{transform:translate(40px,30px) scale(1.12);} }
+
+.hero-eyebrow { font-size:.82rem; letter-spacing:.3em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.5rem; display:flex; align-items:center; gap:.8rem; }
+.dot-pulse { width:8px; height:8px; border-radius:50%; background:var(--hot); animation:pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(2);opacity:.4;} }
+
+.hero-name { font-family:'Bebas Neue'; font-size:clamp(5rem,13vw,13rem); line-height:.9; letter-spacing:.02em; position:relative; z-index:1; }
+.hero-name .line1 { display:block; color:var(--white); }
+.hero-name .line2 { display:block; -webkit-text-stroke:2px var(--hot); color:transparent; position:relative; }
+.hero-name .line2::after { content:attr(data-text); position:absolute; left:3px; top:3px; -webkit-text-stroke:0; color:var(--hot); opacity:.25; clip-path:polygon(0 40%,100% 40%,100% 60%,0 60%); animation:glitch 4s infinite; }
+@keyframes glitch { 0%,90%,100%{transform:translate(0,0);} 92%{transform:translate(-4px,2px); filter:hue-rotate(90deg);} 94%{transform:translate(4px,-2px); filter:hue-rotate(-90deg);} 96%{transform:translate(-2px,0);} }
+
+.hero-tagline { font-size:clamp(.95rem,1.8vw,1.3rem); color:rgba(240,238,255,.6); max-width:560px; line-height:1.75; margin:2rem 0; font-weight:300; }
+.hero-tagline strong { color:var(--volt); font-weight:700; }
+
+.hero-pills { display:flex; flex-wrap:wrap; gap:.8rem; margin-bottom:3rem; }
+.pill { padding:.5rem 1.2rem; border-radius:100px; font-size:.8rem; font-weight:500; cursor:pointer; transition:all .3s; border:1px solid; }
+.pill:hover { scale:1.1; filter:brightness(1.4); box-shadow:0 0 22px currentColor; }
+.pill-hot { border-color:var(--hot); color:var(--hot); }
+.pill-cyan { border-color:var(--cyan); color:var(--cyan); }
+.pill-volt { border-color:var(--volt); color:var(--volt); }
+.pill-purple { border-color:var(--purple); color:var(--purple); }
+
+.hero-cta { display:flex; gap:1.2rem; }
+.btn-glow { padding:1rem 2.5rem; border:none; border-radius:4px; font-family:'Space Grotesk'; font-size:.85rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; text-decoration:none; transition:all .3s; display:inline-block; }
+.btn-hot { background:linear-gradient(135deg,var(--hot),var(--purple)); color:white; box-shadow:0 0 30px rgba(255,60,172,.4); }
+.btn-hot:hover { box-shadow:0 0 55px rgba(255,60,172,.8); transform:translateY(-3px) scale(1.02); }
+.btn-out { background:transparent; border:1.5px solid var(--cyan); color:var(--cyan); }
+.btn-out:hover { background:rgba(0,245,212,.1); box-shadow:0 0 35px rgba(0,245,212,.4); transform:translateY(-3px); }
+
+.hero-photo-wrap { position:absolute; right:4rem; top:50%; transform:translateY(-50%); width:320px; z-index:1; }
+.hero-photo-frame { position:relative; width:280px; height:380px; margin:auto; }
+.hero-photo-frame img { width:100%; height:100%; object-fit:cover; object-position:top; border-radius:4px; position:relative; z-index:2; }
+.hero-photo-frame::before { content:''; position:absolute; inset:-8px; background:linear-gradient(135deg,var(--hot),var(--cyan),var(--purple)); border-radius:6px; z-index:1; animation:rotateBorder 4s linear infinite; }
+.hero-photo-frame::after { content:''; position:absolute; inset:-14px; background:linear-gradient(135deg,var(--cyan),var(--hot),var(--volt)); border-radius:8px; z-index:0; opacity:.35; animation:rotateBorder 4s linear infinite reverse; }
+@keyframes rotateBorder { 0%{filter:hue-rotate(0deg);} 100%{filter:hue-rotate(360deg);} }
+.stat-badge { position:absolute; background:rgba(6,6,16,.92); padding:.8rem 1.1rem; z-index:10; border-radius:6px; }
+.stat-badge .n { font-family:'Bebas Neue'; font-size:2rem; line-height:1; }
+.stat-badge .l { font-size:.62rem; color:rgba(255,255,255,.45); letter-spacing:.12em; text-transform:uppercase; }
+.badge-a { bottom:-25px; left:-35px; border:1px solid var(--volt); }
+.badge-a .n { color:var(--volt); }
+.badge-b { top:-20px; right:-35px; border:1px solid var(--hot); }
+.badge-b .n { color:var(--hot); }
+
+/* MARQUEE */
+.marquee-strip { overflow:hidden; white-space:nowrap; padding:.9rem 0; background:linear-gradient(90deg,var(--hot),var(--purple),var(--cyan),var(--volt),var(--fire),var(--hot)); background-size:300%; animation:gradShift 5s linear infinite; }
+@keyframes gradShift { 0%{background-position:0%} 100%{background-position:300%} }
+.marquee-inner { display:inline-block; animation:marquee 22s linear infinite; }
+.marquee-inner span { font-family:'Bebas Neue'; font-size:1.1rem; letter-spacing:.12em; color:rgba(6,6,16,.85); margin-right:2.5rem; }
+
+@keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* SECTIONS */
+.sec { padding:6rem 3rem; position:relative; overflow:hidden; }
+.sec-label { font-size:.72rem; letter-spacing:.3em; text-transform:uppercase; margin-bottom:.8rem; display:flex; align-items:center; gap:.8rem; font-weight:500; }
+.sec-label::before { content:''; display:block; width:30px; height:2px; }
+h2.stitle { font-family:'Bebas Neue'; font-size:clamp(3rem,6vw,6rem); line-height:.92; margin-bottom:3rem; letter-spacing:.03em; }
+
+/* BENTO - ABOUT */
+#about { background:#080814; }
+.bento { display:grid; grid-template-columns:1.3fr 1fr 1fr; grid-template-rows:auto auto; gap:1.2rem; }
+.bc { background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:12px; padding:2rem; position:relative; overflow:hidden; transition:transform .35s,border-color .35s,box-shadow .35s; }
+.bc:hover { transform:translateY(-5px); }
+.bc::before { content:''; position:absolute; inset:0; opacity:0; transition:opacity .4s; border-radius:12px; }
+.bc:hover::before { opacity:1; }
+
+.bc-main { grid-column:1; grid-row:1/3; border-color:rgba(255,60,172,.18); }
+.bc-main:hover { border-color:var(--hot); box-shadow:0 20px 60px rgba(255,60,172,.13); }
+.bc-main::before { background:radial-gradient(circle at 30% 50%,rgba(255,60,172,.07),transparent 70%); }
+.bc-main .pc { width:100%; aspect-ratio:3/4; overflow:hidden; border-radius:8px; margin-bottom:1.5rem; position:relative; }
+.bc-main .pc img { width:100%; height:100%; object-fit:cover; object-position:top; transition:transform .5s; }
+.bc-main:hover .pc img { transform:scale(1.05); }
+.bc-main .pc::after { content:'PhD Researcher · SUNY Buffalo'; position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(6,6,16,.88)); color:var(--cyan); font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; padding:2rem 1rem .8rem; font-weight:500; }
+.bc-main h3 { font-family:'Syne'; font-size:1.4rem; font-weight:800; margin-bottom:.5rem; }
+.bc-main p { font-size:.87rem; color:rgba(240,238,255,.55); line-height:1.7; }
+
+.bc-stat { border-color:rgba(0,245,212,.18); text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center; }
+.bc-stat:hover { border-color:var(--cyan); box-shadow:0 20px 60px rgba(0,245,212,.1); }
+.bc-stat::before { background:radial-gradient(circle,rgba(0,245,212,.08),transparent 70%); }
+.bc-stat .bn { font-family:'Bebas Neue'; font-size:5rem; line-height:1; background:linear-gradient(135deg,var(--cyan),var(--volt)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.bc-stat .bl { font-size:.75rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(240,238,255,.45); }
+
+.bc-quote { grid-column:2/4; border-color:rgba(232,255,60,.18); }
+.bc-quote:hover { border-color:var(--volt); box-shadow:0 20px 60px rgba(232,255,60,.08); }
+.bc-quote::before { background:radial-gradient(circle at 80% 50%,rgba(232,255,60,.07),transparent 70%); }
+.bc-quote blockquote { font-family:'Syne'; font-size:1.15rem; font-style:italic; line-height:1.65; color:var(--volt); margin-bottom:.9rem; }
+.bc-quote .attr { font-size:.72rem; color:rgba(240,238,255,.35); letter-spacing:.1em; text-transform:uppercase; }
+
+.bc-edu { border-color:rgba(123,47,255,.2); }
+.bc-edu:hover { border-color:var(--purple); box-shadow:0 20px 60px rgba(123,47,255,.1); }
+.bc-edu::before { background:radial-gradient(circle at 50% 0%,rgba(123,47,255,.1),transparent 70%); }
+.edu-item { margin-bottom:1.2rem; padding-bottom:1.2rem; border-bottom:1px solid rgba(255,255,255,.05); }
+.edu-item:last-child { border:none; margin:0; padding:0; }
+.edu-item .sch { font-family:'Syne'; font-weight:700; font-size:.88rem; margin-bottom:.2rem; }
+.edu-item .deg { font-size:.8rem; color:rgba(240,238,255,.5); margin-bottom:.3rem; }
+.edu-item .gpa { font-size:.75rem; color:var(--purple); font-weight:700; }
+
+/* EXPERIENCE */
+#experience { background:linear-gradient(180deg,#08081a,#06060e); }
+.exp-list { display:flex; flex-direction:column; gap:1.5rem; }
+.exp-card { display:grid; grid-template-columns:180px 1fr; gap:2.5rem; align-items:start; padding:2rem 2.5rem; background:rgba(255,255,255,.02); border-radius:12px; border:1px solid rgba(255,255,255,.06); position:relative; overflow:hidden; transition:all .4s; }
+.exp-card::after { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; transform:scaleY(0); transform-origin:top; transition:transform .4s; }
+.exp-card:nth-child(1)::after { background:linear-gradient(180deg,var(--hot),var(--purple)); }
+.exp-card:nth-child(2)::after { background:linear-gradient(180deg,var(--cyan),var(--purple)); }
+.exp-card:nth-child(3)::after { background:linear-gradient(180deg,var(--volt),var(--cyan)); }
+.exp-card:hover { transform:translateX(8px); }
+.exp-card:hover::after { transform:scaleY(1); }
+.exp-card:nth-child(1):hover { border-color:rgba(255,60,172,.2); background:rgba(255,60,172,.03); }
+.exp-card:nth-child(2):hover { border-color:rgba(0,245,212,.2); background:rgba(0,245,212,.03); }
+.exp-card:nth-child(3):hover { border-color:rgba(232,255,60,.2); background:rgba(232,255,60,.03); }
+.exp-period { font-family:'Bebas Neue'; font-size:1rem; letter-spacing:.08em; color:rgba(240,238,255,.3); line-height:1.4; }
+.exp-co { font-size:.7rem; letter-spacing:.15em; text-transform:uppercase; font-weight:600; margin-top:.4rem; }
+.exp-card:nth-child(1) .exp-co { color:var(--hot); }
+.exp-card:nth-child(2) .exp-co { color:var(--cyan); }
+.exp-card:nth-child(3) .exp-co { color:var(--volt); }
+.exp-role { font-family:'Syne'; font-size:1.3rem; font-weight:800; margin-bottom:.7rem; }
+.exp-desc { font-size:.87rem; color:rgba(240,238,255,.58); line-height:1.8; margin-bottom:1rem; }
+.exp-tags { display:flex; flex-wrap:wrap; gap:.5rem; }
+.exp-tag { font-size:.67rem; letter-spacing:.05em; padding:.25rem .7rem; border-radius:4px; background:rgba(255,255,255,.04); color:rgba(240,238,255,.45); }
+
+/* PROJECTS */
+#projects { background:#08081a; }
+.proj-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+.pcard { border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,.06); transition:all .4s; cursor:pointer; background:#090919; }
+.pcard:hover { transform:translateY(-10px) scale(1.01); box-shadow:0 40px 80px rgba(0,0,0,.55); }
+.pcard.featured { grid-column:1/3; display:grid; grid-template-columns:1fr 1fr; }
+.pcard.featured .pvis { min-height:340px; }
+.pcard.featured .pbody { padding:2.5rem; display:flex; flex-direction:column; justify-content:center; }
+
+.pvis { position:relative; height:230px; overflow:hidden; }
+.pvis canvas { position:absolute; inset:0; width:100%!important; height:100%!important; }
+.pvis-img { width:100%; height:100%; object-fit:cover; transition:transform .6s; filter:saturate(.85) contrast(1.05); }
+.pcard:hover .pvis-img { transform:scale(1.08); }
+.pvis-ov { position:absolute; inset:0; background:linear-gradient(to bottom,rgba(6,6,16,0) 30%,rgba(6,6,16,.93) 100%); }
+.ptype { position:absolute; top:1rem; left:1rem; font-size:.63rem; letter-spacing:.15em; text-transform:uppercase; padding:.32rem .8rem; border-radius:4px; font-weight:600; backdrop-filter:blur(8px); }
+.t-fire { background:rgba(255,107,0,.7); color:#fff; border:1px solid rgba(255,107,0,.4); }
+.t-ai { background:rgba(0,245,212,.18); color:var(--cyan); border:1px solid rgba(0,245,212,.3); }
+.t-energy { background:rgba(232,255,60,.18); color:var(--volt); border:1px solid rgba(232,255,60,.3); }
+.t-pharma { background:rgba(255,60,172,.18); color:var(--hot); border:1px solid rgba(255,60,172,.3); }
+
+.pbody { padding:1.5rem; }
+.ptitle { font-family:'Syne'; font-size:1.05rem; font-weight:800; margin-bottom:.6rem; line-height:1.3; }
+.pcard.featured .ptitle { font-size:1.5rem; margin-bottom:1rem; }
+.pdesc { font-size:.83rem; color:rgba(240,238,255,.52); line-height:1.75; margin-bottom:1rem; }
+.pcard.featured .pdesc { font-size:.91rem; }
+.paward { display:inline-flex; align-items:center; gap:.5rem; background:rgba(232,255,60,.1); border:1px solid rgba(232,255,60,.25); color:var(--volt); padding:.5rem 1rem; font-size:.78rem; border-radius:4px; margin-bottom:1rem; }
+.pchips { display:flex; flex-wrap:wrap; gap:.4rem; }
+.pchip { font-size:.62rem; letter-spacing:.05em; padding:.2rem .6rem; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:3px; color:rgba(240,238,255,.38); }
+
+/* SKILLS */
+#skills { background:#06060e; }
+.skills-wrap { display:flex; gap:1.5rem; flex-wrap:wrap; }
+.sg { flex:1; min-width:200px; }
+.sg-name { font-family:'Bebas Neue'; font-size:1.3rem; letter-spacing:.08em; margin-bottom:1rem; }
+.sp-wrap { display:flex; flex-wrap:wrap; gap:.5rem; }
+.sp { font-size:.74rem; padding:.4rem .9rem; border-radius:100px; border:1px solid; transition:all .25s; cursor:default; font-weight:500; }
+.sp:hover { scale:1.1; box-shadow:0 0 15px currentColor; }
+.sp-ml { border-color:rgba(0,245,212,.3); color:var(--cyan); }
+.sp-ai { border-color:rgba(255,60,172,.35); color:var(--hot); }
+.sp-eng { border-color:rgba(232,255,60,.3); color:var(--volt); }
+.sp-viz { border-color:rgba(123,47,255,.4); color:var(--purple); }
+
+/* AWARDS */
+#awards { background:linear-gradient(135deg,#09091a,#0d0820); }
+.aw-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; }
+.aw-card { padding:2rem; border-radius:12px; border:1px solid rgba(255,255,255,.07); background:rgba(255,255,255,.02); transition:all .4s; position:relative; overflow:hidden; }
+.aw-card::before { content:''; position:absolute; top:-50%; right:-50%; width:200%; height:200%; border-radius:50%; opacity:.07; transition:opacity .4s; }
+.aw-card:hover::before { opacity:.13; }
+.aw-card:hover { transform:translateY(-5px); }
+.aw1::before { background:var(--volt); } .aw1:hover { border-color:rgba(232,255,60,.3); box-shadow:0 20px 50px rgba(232,255,60,.08); }
+.aw2::before { background:var(--hot); } .aw2:hover { border-color:rgba(255,60,172,.3); box-shadow:0 20px 50px rgba(255,60,172,.08); }
+.aw3::before { background:var(--cyan); } .aw3:hover { border-color:rgba(0,245,212,.3); box-shadow:0 20px 50px rgba(0,245,212,.08); }
+.aw4::before { background:var(--purple); } .aw4:hover { border-color:rgba(123,47,255,.3); box-shadow:0 20px 50px rgba(123,47,255,.08); }
+.aw-emoji { font-size:2.5rem; margin-bottom:1rem; display:block; }
+.aw-title { font-family:'Syne'; font-size:1.05rem; font-weight:800; margin-bottom:.4rem; }
+.aw-year { font-size:.7rem; letter-spacing:.2em; text-transform:uppercase; margin-bottom:.7rem; font-weight:600; }
+.aw1 .aw-year{color:var(--volt);} .aw2 .aw-year{color:var(--hot);} .aw3 .aw-year{color:var(--cyan);} .aw4 .aw-year{color:var(--purple);}
+.aw-desc { font-size:.82rem; color:rgba(240,238,255,.5); line-height:1.7; }
+
+/* GALLERY */
+#gallery { background:#08081a; }
+.gallery-grid { display:grid; grid-template-columns:repeat(6,1fr); grid-template-rows:240px 240px; gap:1rem; }
+.gi { overflow:hidden; border-radius:10px; position:relative; cursor:pointer; border:1px solid rgba(255,255,255,.05); }
+.gi:nth-child(1){grid-column:1/3;grid-row:1/3;} .gi:nth-child(2){grid-column:3/5;} .gi:nth-child(3){grid-column:5/7;} .gi:nth-child(4){grid-column:3/4;} .gi:nth-child(5){grid-column:4/6;} .gi:nth-child(6){grid-column:6/7;}
+.gi img { width:100%; height:100%; object-fit:cover; object-position:top; transition:transform .6s,filter .4s; filter:saturate(.7); }
+.gi:hover img { transform:scale(1.08); filter:saturate(1.25); }
+.gi-ov { position:absolute; inset:0; background:linear-gradient(to bottom,transparent 40%,rgba(6,6,16,.88)); opacity:0; transition:opacity .4s; display:flex; align-items:flex-end; padding:1.2rem; }
+.gi:hover .gi-ov { opacity:1; }
+.gi-cap { font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--cyan); font-weight:500; }
+
+/* CONTACT */
+#contact { background:#06060e; text-align:center; padding:8rem 3rem; position:relative; overflow:hidden; }
+.ct-grid { position:absolute; inset:0; opacity:.04; background-image:linear-gradient(rgba(0,245,212,.3) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,212,.3) 1px,transparent 1px); background-size:60px 60px; }
+.ct-glow { position:absolute; width:600px; height:600px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,255,.2),transparent 70%); left:50%; top:50%; transform:translate(-50%,-50%); pointer-events:none; animation:breathe 4s ease-in-out infinite; }
+@keyframes breathe { 0%,100%{scale:1;opacity:.6;} 50%{scale:1.2;opacity:1;} }
+.ct-kicker { font-size:.75rem; letter-spacing:.3em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.5rem; position:relative; }
+.ct-headline { font-family:'Bebas Neue'; font-size:clamp(3.5rem,8vw,8rem); line-height:.9; margin-bottom:2rem; position:relative; }
+.ct-headline .fill { color:var(--white); }
+.ct-headline .stroke { -webkit-text-stroke:2px var(--hot); color:transparent; }
+.ct-sub { font-size:1rem; color:rgba(240,238,255,.5); max-width:460px; margin:0 auto 3rem; line-height:1.7; }
+.ct-row { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; position:relative; }
+.clink { display:flex; align-items:center; gap:.7rem; padding:.95rem 1.9rem; border-radius:8px; font-size:.82rem; font-weight:500; text-decoration:none; border:1px solid; transition:all .3s; }
+.clink:hover { scale:1.06; box-shadow:0 0 32px currentColor; background:rgba(255,255,255,.04); }
+.cl-mail{border-color:rgba(255,60,172,.4);color:var(--hot);} .cl-ph{border-color:rgba(0,245,212,.4);color:var(--cyan);} .cl-li{border-color:rgba(232,255,60,.4);color:var(--volt);} .cl-gh{border-color:rgba(123,47,255,.4);color:var(--purple);}
+
+footer { background:#030307; padding:1.8rem 3rem; display:flex; justify-content:space-between; border-top:1px solid rgba(255,255,255,.04); font-size:.7rem; color:rgba(240,238,255,.2); letter-spacing:.05em; }
+
+/* SCROLL REVEAL */
+.sr { opacity:0; transform:translateY(40px); transition:opacity .7s ease,transform .7s ease; }
+.sr.vis { opacity:1; transform:translateY(0); }
+.sr-l { opacity:0; transform:translateX(-40px); transition:opacity .7s,transform .7s; }
+.sr-l.vis { opacity:1; transform:translateX(0); }
+.sr-r { opacity:0; transform:translateX(40px); transition:opacity .7s,transform .7s; }
+.sr-r.vis { opacity:1; transform:translateX(0); }
+
+@media(max-width:900px){
+  #hero{padding-top:5rem;} .hero-photo-wrap{display:none;}
+  .bento{grid-template-columns:1fr;} .bc-main{grid-row:auto;} .bc-quote{grid-column:auto;}
+  .proj-grid{grid-template-columns:1fr;} .pcard.featured{grid-column:auto;grid-template-columns:1fr;}
+  .aw-grid{grid-template-columns:1fr;}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:auto;}
+  .gi{grid-column:auto!important;grid-row:auto!important;height:200px;}
+  nav{padding:1rem 1.5rem;} .nav-links{display:none;} .sec{padding:4rem 1.5rem;}
+  .exp-card{grid-template-columns:1fr;gap:.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<nav>
+  <div class="nav-logo">Poulomee Roy</div>
+  <div class="nav-links">
+    <a href="#about">About</a><a href="#experience">Work</a><a href="#projects">Research</a>
+    <a href="#skills">Skills</a><a href="#awards">Awards</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-blobs"><div class="blob blob1"></div><div class="blob blob2"></div><div class="blob blob3"></div></div>
+
+  <div class="hero-eyebrow"><div class="dot-pulse"></div>Available for Research Collaborations & AI Opportunities</div>
+
+  <h1 class="hero-name">
+    <span class="line1">POULOMEE</span>
+    <span class="line2" data-text="ROY">ROY</span>
+  </h1>
+
+  <p class="hero-tagline">
+    PhD Researcher × Data Scientist × AI Engineer<br>
+    Building <strong>wildfire prediction AI</strong>, <strong>agentic LLM systems</strong>, and <strong>sustainability intelligence</strong> — from research labs to global production.
+  </p>
+
+  <div class="hero-pills">
+    <span class="pill pill-hot">🔥 Wildfire AI</span>
+    <span class="pill pill-cyan">🤖 Generative AI</span>
+    <span class="pill pill-volt">⚡ Energy Analytics</span>
+    <span class="pill pill-purple">📊 Operations Research</span>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#projects" class="btn-glow btn-hot">Explore My Work</a>
+    <a href="#contact" class="btn-glow btn-out">Get In Touch</a>
+  </div>
+
+  <div class="hero-photo-wrap">
+    <div class="hero-photo-frame">
+      <img src="Gemini_Generated_Image_pwlghjpwlghjpwlg.png" alt="Poulomee Roy">
+    </div>
+    <div class="stat-badge badge-a"><div class="n">3.96</div><div class="l">PhD GPA</div></div>
+    <div class="stat-badge badge-b"><div class="n">6+</div><div class="l">Publications</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>Machine Learning</span><span>★</span><span>Generative AI</span><span>★</span><span>Wildfire Risk AI</span><span>★</span><span>Vertex AI</span><span>★</span><span>LangChain</span><span>★</span><span>Operations Research</span><span>★</span><span>BERT Embeddings</span><span>★</span><span>Satellite Imagery</span><span>★</span><span>Geospatial Analytics</span><span>★</span><span>Python · SQL · Spark</span><span>★</span><span>DOE Prize 2025</span><span>★</span>
+    <span>Machine Learning</span><span>★</span><span>Generative AI</span><span>★</span><span>Wildfire Risk AI</span><span>★</span><span>Vertex AI</span><span>★</span><span>LangChain</span><span>★</span><span>Operations Research</span><span>★</span><span>BERT Embeddings</span><span>★</span><span>Satellite Imagery</span><span>★</span><span>Geospatial Analytics</span><span>★</span><span>Python · SQL · Spark</span><span>★</span><span>DOE Prize 2025</span><span>★</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" class="sec">
+  <div class="sec-label sr" style="color:var(--cyan);">01 — About Me <span style="display:inline-block;width:30px;height:2px;background:var(--cyan);vertical-align:middle;margin-left:.5rem;"></span></div>
+  <h2 class="stitle sr">WHO AM<br><span style="-webkit-text-stroke:2px var(--hot);color:transparent;">I?</span></h2>
+  <div class="bento">
+    <div class="bc bc-main sr-l">
+      <div class="pc"><img src="Photo_lobby.jpeg" alt="Poulomee Roy"></div>
+      <h3>Poulomee Roy</h3>
+      <p>Buffalo, NY · PhD Candidate @ SUNY Buffalo · Data Scientist @ Bunge</p>
+    </div>
+    <div class="bc bc-stat sr"><div class="bn">5+</div><div class="bl">Years Experience</div></div>
+    <div class="bc bc-stat sr"><div class="bn">4.0</div><div class="bl">MS GPA — Perfect</div></div>
+    <div class="bc bc-quote sr">
+      <blockquote>"From chaos to concurrence — integrating AI for a more equitable and resilient world, one dataset at a time."</blockquote>
+      <div class="attr">— Research Philosophy, IISE Annual Conference 2025</div>
+    </div>
+    <div class="bc bc-edu sr">
+      <div class="edu-item"><div class="sch">SUNY Buffalo</div><div class="deg">PhD · Operations Research Analytics</div><div class="gpa">GPA: 3.96 / 4.0</div></div>
+      <div class="edu-item"><div class="sch">SUNY Buffalo</div><div class="deg">MS · Industrial & Systems Engineering (Data Analytics)</div><div class="gpa">GPA: 4.0 / 4.0 — Perfect Score</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="sec">
+  <div class="sec-label sr" style="color:var(--hot);">02 — Work Experience</div>
+  <h2 class="stitle sr">WHERE I'VE<br><span style="-webkit-text-stroke:2px var(--hot);color:transparent;">WORKED</span></h2>
+  <div class="exp-list">
+    <div class="exp-card sr">
+      <div><div class="exp-period">May 2025<br>Present</div><div class="exp-co">Bunge · St. Louis</div></div>
+      <div>
+        <div class="exp-role">Data Scientist — Global Sustainability & Agri Intelligence</div>
+        <div class="exp-desc">Architected a fully agentic RAG framework on Google Vertex AI — LLMs orchestrating retrievers, translators & calculators to parse multilingual ESG documents at global scale. Led agricultural dataset harmonization across North America for sustainability intelligence dashboards and cross-continental analytics.</div>
+        <div class="exp-tags"><span class="exp-tag">Vertex AI</span><span class="exp-tag">LangChain</span><span class="exp-tag">BigQuery</span><span class="exp-tag">GCP</span><span class="exp-tag">RAG</span><span class="exp-tag">Streamlit</span><span class="exp-tag">PDFPlumber</span></div>
+      </div>
+    </div>
+    <div class="exp-card sr">
+      <div><div class="exp-period">Nov 2023<br>Present</div><div class="exp-co">OASIS · SUNY UB</div></div>
+      <div>
+        <div class="exp-role">Research Assistant — NSF & DOE Funded</div>
+        <div class="exp-desc">Leading AI research on wildfire risk mapping (GeoFlame), infrastructure resilience, and renewable energy grid integration. Built BERT embedding pipelines, satellite imagery ML systems, and synthesized 300+ peer-reviewed studies for US DOE policy reports. Won DOE Science Synthesis Prize 2025.</div>
+        <div class="exp-tags"><span class="exp-tag">BERT</span><span class="exp-tag">Google Earth Engine</span><span class="exp-tag">MODIS</span><span class="exp-tag">GeoPandas</span><span class="exp-tag">PostgreSQL</span><span class="exp-tag">R</span></div>
+      </div>
+    </div>
+    <div class="exp-card sr">
+      <div><div class="exp-period">Jul 2020<br>May 2023</div><div class="exp-co">ZS Associates</div></div>
+      <div>
+        <div class="exp-role">Decision Analytics Associate Consultant</div>
+        <div class="exp-desc">Boosted Rybelsus (oral Semaglutide) sales by 100% — first major surge since 2017 launch — via game theory + stochastic optimization launch models. Segmented 10M+ physicians with PySpark K-means. Recognized as "Go-to Expert" by Novo Nordisk. Led cross-functional teams across Europe, US & India.</div>
+        <div class="exp-tags"><span class="exp-tag">XGBoost</span><span class="exp-tag">Gurobi</span><span class="exp-tag">PySpark</span><span class="exp-tag">AWS</span><span class="exp-tag">Gemini 1.5</span><span class="exp-tag">Tableau</span><span class="exp-tag">AutoML</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="sec">
+  <div class="sec-label sr" style="color:var(--volt);">03 — Research Projects</div>
+  <h2 class="stitle sr">WHAT I<br><span style="-webkit-text-stroke:2px var(--volt);color:transparent;">BUILT</span></h2>
+  <div class="proj-grid">
+
+    <div class="pcard featured sr">
+      <div class="pvis">
+        <canvas id="wildfireCanvas"></canvas>
+        <div class="pvis-ov"></div>
+        <span class="ptype t-fire">🔥 Wildfire AI</span>
+      </div>
+      <div class="pbody">
+        <div class="ptitle">GeoFlame: AI Wildfire Risk Prediction & Vulnerability Mapping</div>
+        <div class="pdesc">AI decision-support framework integrating MODIS, VIIRS & Sentinel-2 satellite imagery with meteorological and socio-demographic data. End-to-end geospatial pipelines for spatio-temporal wildfire risk across California counties. Reveals systemic inequities in exposure and emergency response.</div>
+        <div class="paward">🏆 U.S. Department of Energy Science Synthesis Prize 2025</div>
+        <div class="pchips"><span class="pchip">Google Earth Engine</span><span class="pchip">MODIS/Sentinel-2</span><span class="pchip">NDVI + LST</span><span class="pchip">Deep Learning</span><span class="pchip">Geospatial</span></div>
+      </div>
+    </div>
+
+    <div class="pcard sr">
+      <div class="pvis"><canvas id="neuralCv"></canvas><div class="pvis-ov"></div><span class="ptype t-ai">🤖 LLM / GenAI</span></div>
+      <div class="pbody">
+        <div class="ptitle">AI Decision Intelligence for Infrastructure (NSF)</div>
+        <div class="pdesc">BERT embedding systems + LLM pipelines auto-categorizing infrastructure bottlenecks, forecasting disruption costs, generating real-time risk summaries for decision-makers.</div>
+        <div class="pchips"><span class="pchip">BERT</span><span class="pchip">Embeddings</span><span class="pchip">Time-Series</span><span class="pchip">NLP</span></div>
+      </div>
+    </div>
+
+    <div class="pcard sr">
+      <div class="pvis" style="background:linear-gradient(135deg,#0d1520,#0f1a2a)"><canvas id="energyCv"></canvas><div class="pvis-ov"></div><span class="ptype t-energy">⚡ Energy</span></div>
+      <div class="pbody">
+        <div class="ptitle">Renewable Energy-to-Grid Integration (DOE)</div>
+        <div class="pdesc">Systematic review of 300+ studies on RE grid barriers. Findings shaped national policy on decentralized grids, smart transmission, and green financing instruments.</div>
+        <div class="pchips"><span class="pchip">Bibliometrics</span><span class="pchip">Policy Synthesis</span><span class="pchip">Energy Systems</span></div>
+      </div>
+    </div>
+
+    <div class="pcard sr">
+      <div class="pvis" style="background:linear-gradient(135deg,#1a0d1a,#200d20)"><canvas id="pharmaCv"></canvas><div class="pvis-ov"></div><span class="ptype t-pharma">💊 Pharma</span></div>
+      <div class="pbody">
+        <div class="ptitle">Rybelsus 100% Sales Boost — Novo Nordisk</div>
+        <div class="pdesc">Game theory + stochastic optimization for Semaglutide launch. XGBoost predictive modeling drove the drug's first major sales surge since 2017. Led as "Go-to Expert" across 3 continents.</div>
+        <div class="pchips"><span class="pchip">Gurobi</span><span class="pchip">XGBoost</span><span class="pchip">AutoML</span><span class="pchip">Game Theory</span></div>
+      </div>
+    </div>
+
+    <div class="pcard sr">
+      <div class="pvis" style="background:linear-gradient(135deg,#0d1a14,#0d2214)"><canvas id="agentCv"></canvas><div class="pvis-ov"></div><span class="ptype t-ai">🌐 Agentic AI</span></div>
+      <div class="pbody">
+        <div class="ptitle">Agentic RAG Framework — Vertex AI @ Bunge</div>
+        <div class="pdesc">Production system orchestrating LLMs with retrievers, translators & calculators to parse multilingual ESG PDFs for global agri-commodity intelligence at enterprise scale.</div>
+        <div class="pchips"><span class="pchip">Vertex AI</span><span class="pchip">LangChain</span><span class="pchip">BigQuery</span><span class="pchip">GCP</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="sec">
+  <div class="sec-label sr" style="color:var(--purple);">04 — Technical Skills</div>
+  <h2 class="stitle sr">MY<br><span style="-webkit-text-stroke:2px var(--purple);color:transparent;">TOOLKIT</span></h2>
+  <div class="skills-wrap">
+    <div class="sg sr"><div class="sg-name" style="color:var(--cyan);">ML & Statistics</div>
+      <div class="sp-wrap"><span class="sp sp-ml">XGBoost</span><span class="sp sp-ml">CatBoost</span><span class="sp sp-ml">Random Forest</span><span class="sp sp-ml">Reinforcement Learning</span><span class="sp sp-ml">Time-Series</span><span class="sp sp-ml">Bayesian Modeling</span><span class="sp sp-ml">Graph Neural Nets</span><span class="sp sp-ml">Probabilistic Forecasting</span></div>
+    </div>
+    <div class="sg sr"><div class="sg-name" style="color:var(--hot);">Generative AI & NLP</div>
+      <div class="sp-wrap"><span class="sp sp-ai">LLMs</span><span class="sp sp-ai">RAG</span><span class="sp sp-ai">BERT Fine-tuning</span><span class="sp sp-ai">Embeddings</span><span class="sp sp-ai">Prompt Engineering</span><span class="sp sp-ai">LangChain</span><span class="sp sp-ai">Vertex AI</span><span class="sp sp-ai">Gemini 1.5</span></div>
+    </div>
+    <div class="sg sr"><div class="sg-name" style="color:var(--volt);">Engineering & Cloud</div>
+      <div class="sp-wrap"><span class="sp sp-eng">Python</span><span class="sp sp-eng">SQL</span><span class="sp sp-eng">PySpark</span><span class="sp sp-eng">GCP</span><span class="sp sp-eng">AWS</span><span class="sp sp-eng">BigQuery</span><span class="sp sp-eng">Databricks</span><span class="sp sp-eng">PostgreSQL</span></div>
+    </div>
+    <div class="sg sr"><div class="sg-name" style="color:var(--purple);">Visualization & OR</div>
+      <div class="sp-wrap"><span class="sp sp-viz">Tableau</span><span class="sp sp-viz">Power BI</span><span class="sp sp-viz">Google Earth Engine</span><span class="sp sp-viz">GeoPandas</span><span class="sp sp-viz">Gurobi</span><span class="sp sp-viz">Streamlit</span><span class="sp sp-viz">Matplotlib</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section id="awards" class="sec">
+  <div class="sec-label sr" style="color:var(--volt);">05 — Recognition</div>
+  <h2 class="stitle sr">AWARDS &<br><span style="-webkit-text-stroke:2px var(--volt);color:transparent;">HONORS</span></h2>
+  <div class="aw-grid">
+    <div class="aw-card aw1 sr"><span class="aw-emoji">🏆</span><div class="aw-title">U.S. DOE Science Synthesis Prize</div><div class="aw-year">2025</div><div class="aw-desc">Awarded for AI-driven resilience analytics on renewable energy integration. Featured in University at Buffalo News nationally.</div></div>
+    <div class="aw-card aw2 sr"><span class="aw-emoji">🥇</span><div class="aw-title">INFORMS Best Student Chapter (Summa Cum Laude)</div><div class="aw-year">2025</div><div class="aw-desc">Highest national recognition for student chapter excellence. Led as Chapter President — organized cross-disciplinary workshops and industry events.</div></div>
+    <div class="aw-card aw3 sr"><span class="aw-emoji">⭐</span><div class="aw-title">Departmental Leadership Award</div><div class="aw-year">2025</div><div class="aw-desc">Recognized for exemplary leadership as President of INFORMS Student Chapter at SUNY Buffalo.</div></div>
+    <div class="aw-card aw4 sr"><span class="aw-emoji">🥈</span><div class="aw-title">SRA Merit Award — Runner-Up</div><div class="aw-year">2024</div><div class="aw-desc">Runner-up for Engineering & Infrastructure Group's Student Merit category at the Society for Risk Analysis Annual Meeting.</div></div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="sec">
+  <div class="sec-label sr" style="color:var(--cyan);">06 — Life & Work</div>
+  <h2 class="stitle sr">MOMENTS &<br><span style="-webkit-text-stroke:2px var(--cyan);color:transparent;">PLACES</span></h2>
+  <div class="gallery-grid">
+    <div class="gi sr"><img src="Photo_poster.jpeg" alt="Research"><div class="gi-ov"><div class="gi-cap">📋 Research Poster Presentation</div></div></div>
+    <div class="gi sr"><img src="Photo_temple.jpeg" alt="Temple"><div class="gi-ov"><div class="gi-cap">🛕 Temple Visit</div></div></div>
+    <div class="gi sr"><img src="Photo_lobby.jpeg" alt="Bunge"><div class="gi-ov"><div class="gi-cap">🌿 Bunge HQ, St. Louis</div></div></div>
+    <div class="gi sr"><img src="Gemini_Generated_Image_pwlghjpwlghjpwlg.png" alt="Professional"><div class="gi-ov"><div class="gi-cap">💼 Professional Portrait</div></div></div>
+    <div class="gi sr"><img src="Photo_falls.jpeg" alt="Niagara"><div class="gi-ov"><div class="gi-cap">💧 Niagara Falls, NY</div></div></div>
+    <div class="gi sr"><img src="IMG_0884%20(1).jpeg" alt="Bunge2"><div class="gi-ov"><div class="gi-cap">🏢 First Day at Bunge</div></div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="ct-grid"></div>
+  <div class="ct-glow"></div>
+  <div class="ct-kicker">Open to Opportunities</div>
+  <h2 class="ct-headline"><span class="fill">LET'S</span><br><span class="stroke">CONNECT</span></h2>
+  <p class="ct-sub">Research collaborations, AI/ML roles, data science partnerships — let's build something that matters.</p>
+  <div class="ct-row">
+    <a href="mailto:poulomeekatwa@gmail.com" class="clink cl-mail">📧 poulomeekatwa@gmail.com</a>
+    <a href="tel:+17165900056" class="clink cl-ph">📱 +1 716 590 0056</a>
+    <a href="#" class="clink cl-li">💼 LinkedIn</a>
+    <a href="#" class="clink cl-gh">🐙 GitHub</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Poulomee Roy — PhD Candidate & Data Scientist · Buffalo, NY</span>
+  <span>SUNY Buffalo · Bunge · NSF · DOE Prize Winner</span>
+</footer>
+
+<script>
+// ─── CURSOR ───
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function animR(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animR);})();
+
+// ─── SCROLL REVEAL ───
+const srEls=document.querySelectorAll('.sr,.sr-l,.sr-r');
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.08}).observe&&
+srEls.forEach(el=>new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.08}).observe(el));
+
+// ─── WILDFIRE CANVAS ───
+(function(){
+  const c=document.getElementById('wildfireCanvas');if(!c)return;
+  const ctx=c.getContext('2d');
+  function rsz(){c.width=c.offsetWidth;c.height=c.offsetHeight;}rsz();
+  const pts=[];
+  for(let i=0;i<150;i++)pts.push({x:Math.random()*1000,y:Math.random()*300+100,vx:(Math.random()-.5)*.5,vy:-(Math.random()*2.5+.5),life:Math.random(),decay:Math.random()*.007+.003,sz:Math.random()*8+3,hue:Math.random()*45+5});
+  function draw(){
+    ctx.fillStyle='rgba(6,6,16,.22)';ctx.fillRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      p.x+=p.vx+Math.sin(p.life*5)*.3;p.y+=p.vy;p.life-=p.decay;
+      if(p.life<=0||p.y<-30){p.x=Math.random()*c.width;p.y=c.height+10;p.life=1;p.hue=Math.random()*45+5;p.vy=-(Math.random()*2.5+.5);p.sz=Math.random()*9+3;}
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.sz*3);
+      g.addColorStop(0,`hsla(${p.hue},100%,62%,${p.life*.92})`);
+      g.addColorStop(.5,`hsla(${p.hue+25},100%,42%,${p.life*.5})`);
+      g.addColorStop(1,'transparent');
+      ctx.beginPath();ctx.fillStyle=g;ctx.arc(p.x,p.y,p.sz*3,0,Math.PI*2);ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── NEURAL FN ───
+function makeNeural(id,nc,ec){
+  const c=document.getElementById(id);if(!c)return;
+  const ctx=c.getContext('2d');
+  function rsz(){c.width=c.offsetWidth;c.height=c.offsetHeight;}rsz();
+  const nd=[];
+  for(let i=0;i<28;i++)nd.push({x:Math.random()*800,y:Math.random()*400,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,r:Math.random()*3+1.5,ph:Math.random()*Math.PI*2});
+  function draw(){
+    ctx.fillStyle='rgba(6,6,16,.3)';ctx.fillRect(0,0,c.width,c.height);
+    nd.forEach(n=>{n.x+=n.vx;n.y+=n.vy;n.ph+=.03;if(n.x<0||n.x>c.width)n.vx*=-1;if(n.y<0||n.y>c.height)n.vy*=-1;});
+    for(let i=0;i<nd.length;i++)for(let j=i+1;j<nd.length;j++){
+      const dx=nd[i].x-nd[j].x,dy=nd[i].y-nd[j].y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){ctx.beginPath();ctx.strokeStyle=ec.replace('X',(1-d/110).toFixed(2));ctx.lineWidth=.8;ctx.moveTo(nd[i].x,nd[i].y);ctx.lineTo(nd[j].x,nd[j].y);ctx.stroke();}
+    }
+    nd.forEach(n=>{const g=(Math.sin(n.ph)*.4+.6);ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=nc.replace('X',g.toFixed(2));ctx.fill();});
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+makeNeural('neuralCv','rgba(0,245,212,X)','rgba(0,245,212,X)');
+makeNeural('agentCv','rgba(255,60,172,X)','rgba(255,60,172,X)');
+
+// ─── ENERGY WAVE ───
+(function(){
+  const c=document.getElementById('energyCv');if(!c)return;
+  const ctx=c.getContext('2d');
+  function rsz(){c.width=c.offsetWidth;c.height=c.offsetHeight;}rsz();
+  let t=0;
+  function draw(){
+    ctx.fillStyle='rgba(6,6,16,.35)';ctx.fillRect(0,0,c.width,c.height);t+=.03;
+    const cols=['rgba(232,255,60','rgba(0,245,212','rgba(255,200,0','rgba(123,47,255'];
+    for(let w=0;w<4;w++){
+      ctx.beginPath();
+      for(let x=0;x<=c.width;x+=3){const y=c.height/2+Math.sin(x*.012+t+w*1.1)*40+Math.sin(x*.007-t*.7)*22;w===0&&x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
+      ctx.strokeStyle=cols[w]+`,${.55-w*.08})`;ctx.lineWidth=2.5-w*.3;ctx.stroke();
+    }
+    for(let i=0;i<6;i++){const x=(i/6)*c.width+Math.sin(t+i)*20,y=c.height*.3+Math.cos(t*.7+i)*15;const g=ctx.createRadialGradient(x,y,0,x,y,18);g.addColorStop(0,'rgba(255,220,0,.8)');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,18,0,Math.PI*2);ctx.fill();}
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── PHARMA BARS ───
+(function(){
+  const c=document.getElementById('pharmaCv');if(!c)return;
+  const ctx=c.getContext('2d');
+  function rsz(){c.width=c.offsetWidth;c.height=c.offsetHeight;}rsz();
+  const bars=[];const N=20;
+  for(let i=0;i<N;i++)bars.push({v:Math.random()*.7+.1,tgt:Math.random()*.8+.1});
+  let t=0;
+  function draw(){
+    ctx.fillStyle='rgba(6,6,16,.32)';ctx.fillRect(0,0,c.width,c.height);t+=.02;
+    bars.forEach((b,i)=>{
+      b.v+=(b.tgt-b.v)*.04;if(Math.abs(b.v-b.tgt)<.01)b.tgt=Math.random()*.8+.1;
+      const bw=c.width/N-4,x=i*(c.width/N)+2,h=b.v*c.height*.8,y=c.height-h-20;
+      const g=ctx.createLinearGradient(0,y,0,c.height);g.addColorStop(0,'rgba(255,60,172,.95)');g.addColorStop(1,'rgba(123,47,255,.3)');
+      ctx.fillStyle=g;ctx.fillRect(x,y,bw,h);
+    });
+    ctx.fillStyle='rgba(255,60,172,.85)';ctx.font='bold 13px Space Grotesk,sans-serif';ctx.fillText('+100% SALES SURGE',16,28);
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
